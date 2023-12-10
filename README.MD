@@ -1,0 +1,1 @@
+Guide drone to defined points with altitude and speed parameters
