@@ -55,11 +55,17 @@ class Copter:
             sleep(1)
         print("Target altitude reached")
 
+    '''
+    Change mode
+    '''
     def switch_mode(self, mode: str) -> None:
         print(f"Change mode to {mode}")
         self.vehicle.mode = VehicleMode(mode)
 
-    def run(self):
+    '''
+    Guide drone to defined points
+    '''
+    def run(self) -> None:
         for point in self.points:
             location = LocationGlobalRelative(point[0], point[1], alt=point[3])
             print(f"Follow to point: {point[0]}, {point[1]}")
@@ -70,7 +76,7 @@ class Copter:
                 sleep(1)
             print("Target point reached")
 
-    def set_yaw(self, yaw):
+    def set_yaw(self, yaw) -> None:
         print(f"Yaw: {yaw}")
         msg = self.vehicle.message_factory.command_long_encode(
             0, 0,
