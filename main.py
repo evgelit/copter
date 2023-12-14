@@ -1,13 +1,50 @@
 from copter import Copter
 
-copter = Copter()
-copter.alt = 100  # take off target altitude
-copter.points = [
-    (50.443326, 30.448078, 10, 100)  # lat, lon, speed, alt
-]
+DESTINATION_POINT = (50.443326, 30.448078)
+
+CHANNELS_MAPPING = {
+    "throttle": {
+        "neutral": 1500,
+        "gears": {
+            1: 125,
+            2: 200,
+            3: 300,
+            4: 400,
+            5: 500
+        },
+    },
+    "yaw": {
+        "neutral": 1500,
+        "gears": {
+            1: 22,
+            2: 35,
+            3: 40,
+            4: 75,
+            5: 100
+        }
+    },
+    "pitch": {
+        "neutral": 1500,
+        "gears": {
+            1: 100,
+            2: 200,
+            3: 300,
+            4: 400,
+            5: 500
+            }
+        }
+}
+
+copter = Copter(channels_mapping=CHANNELS_MAPPING)
 copter.arm()
-copter.take_off()
-# here, according requirements, drone should change more to ALT_HOLD.
-# But, with that mode, it loosing control and falling down, so it keep GUIDED mode
-copter.run()
-copter.set_yaw(350)
+copter.switch_mode(mode="ALT_HOLD")
+
+copter.to_altitude(altitude=100)
+copter.to_point(
+    lat=DESTINATION_POINT[0],
+    long=DESTINATION_POINT[1],
+    precision=3
+)
+copter.rotate_to(yaw=-0.17)
+while True:
+    copter.run()

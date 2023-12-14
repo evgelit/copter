@@ -1,1 +1,2 @@
 dronekit~=2.9.2
+geopy~=2.2.0
