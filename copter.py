@@ -172,12 +172,20 @@ class Copter:
         while result_angle > 0.9:
             print(f"Adjusting yaw to {result_angle} deg.")
             self.pitch = 0
-            direction = self.get_rotate_direction(math.degrees(self.vehicle.attitude.yaw), math.degrees(yaw))
-            result_angle = self.get_result_angle(math.degrees(self.vehicle.attitude.yaw), math.degrees(yaw))
+            direction = self.get_rotate_direction(
+                ang1=math.degrees(self.vehicle.attitude.yaw),
+                ang2=math.degrees(yaw)
+            )
+            result_angle = self.get_result_angle(
+                ang1=math.degrees(self.vehicle.attitude.yaw),
+                ang2=math.degrees(yaw)
+            )
             if result_angle > 100:
                 self.yaw = self.mapping["yaw"]["gears"][5] * direction
             elif result_angle > 30:
                 self.yaw = self.mapping["yaw"]["gears"][4] * direction
+            elif result_angle > 20:
+                self.yaw = self.mapping["yaw"]["gears"][3] * direction
             else:
                 self.yaw = self.mapping["yaw"]["gears"][1] * direction
             self.run()
@@ -214,10 +222,10 @@ class Copter:
             else:
                 self.pitch = -self.mapping["pitch"]["gears"][1]
             yaw = self.calculate_yaw(
-                self.vehicle.location.global_relative_frame.lat,
-                self.vehicle.location.global_relative_frame.lon,
-                lat,
-                long
+                lat1=self.vehicle.location.global_relative_frame.lat,
+                long1=self.vehicle.location.global_relative_frame.lon,
+                lat2=lat,
+                long2=long
             )
             self.rotate_to(yaw)
             self.run()
